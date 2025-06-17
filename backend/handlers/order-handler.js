@@ -1,6 +1,4 @@
 const Order = require("./../db/order");
-const { clearCart } = require("./shopping-cart-handler");
-
 
 async function addOrder(userId, orderModel) {
     let order = new Order({

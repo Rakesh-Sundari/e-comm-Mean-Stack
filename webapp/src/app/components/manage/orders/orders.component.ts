@@ -16,7 +16,7 @@ export class OrdersComponent {
   orderService=inject(OrderService);
   orders:Order[]=[];
   ngOnInit(){
-    this.orderService.getCustomerOrders().subscribe((result)=>{
+    this.orderService.getAdminOrder().subscribe((result)=>{
       this.orders=result;
     })
   }
