@@ -15,7 +15,14 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://witty-coast-00933a01e.1.azurestaticapps.net',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
+
+
+
 app.use(express.json());
 app.get("/", (req, res) => {
     res.send("server running successfully here");
