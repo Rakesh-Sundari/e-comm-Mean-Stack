@@ -1,34 +1,37 @@
-const jwt = require("jsonwebtoken");
+const jwt=require("jsonwebtoken");
 
-function verifyToken(req, res, next) {
-  // ✅ Allow preflight CORS requests
-  if (req.method === "OPTIONS") {
+function verifyToken(req,res,next){
+    if (req.method === "OPTIONS") {
     return next();
   }
+    const token=req.header("Authorization");
+    if(!token){
+        return res.status(401).send({
+            error:"access denied",
+        });
+    }
+    try{
+        const decode=jwt.verify(token,"secret");
+        console.log(decode);
+        req.user=decode;
+        next();
+    }catch(err){
+        return res.status(401).send({
+            error:"invalid token"
+        });
 
-  const authHeader = req.header("Authorization");
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).send({ error: "Access denied: No token" });
-  }
-
-  try {
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, "secret");
-    console.log("Decoded token:", decoded);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).send({ error: "Invalid token" });
-  }
+    }
 }
 
-function isAdmin(req, res, next) {
-  if (req.user && req.user.isAdmin) {
-    next();
-  } else {
-    return res.status(403).send({ error: "Forbidden: Admin only" });
-  }
+function isAdmin(req,res,next){
+    if(req.user && req.user.isAdmin){
+
+        next();
+    }else{
+        return res.status(403).send({
+            error:"forbidden",
+        });
+    }
 }
 
-module.exports = { verifyToken, isAdmin };
+module.exports={verifyToken,isAdmin};
