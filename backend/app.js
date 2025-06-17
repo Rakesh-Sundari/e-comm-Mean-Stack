@@ -17,7 +17,6 @@ app.listen(port, () => {
 
 app.use(cors({
   origin: 'https://witty-coast-00933a01e.1.azurestaticapps.net',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
