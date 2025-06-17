@@ -1,3 +1,4 @@
 export const environment = {
-    apiUrl:"http://myshop.test"
+    production: true,
+    apiUrl: "https://nodejs-backend-1-fxcqdrd8dme6e7a6.canadacentral-01.azurewebsites.net"
 };
