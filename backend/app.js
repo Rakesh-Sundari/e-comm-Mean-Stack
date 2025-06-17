@@ -32,7 +32,7 @@ async function connectDb() {
     await mongoose.connect(mongoUri, {
         dbName: "e-comm-store-db",
     });
-    console.log("mongo connected successfully");
+    console.log("mongo connected successfully here");
 }
 connectDb().catch((err) => {
     console.log(err);
