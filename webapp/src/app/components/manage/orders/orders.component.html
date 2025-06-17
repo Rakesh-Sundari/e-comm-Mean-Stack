@@ -14,7 +14,7 @@
                 <p>{{order.address.pincode}}</p>
             </div>
             <div class="w-6/12">
-                <mat-button-toggle-group [value]="order.status" name="status" aria-label="Font Style" (change)="statusChanged($event,order)">
+                <mat-button-toggle-group [value]="order.status" name="fontstyle" aria-label="Font Style" (change)="statusChanged($event,order)">
                     <mat-button-toggle value="Dispatched" >Dispatched</mat-button-toggle>
                     <mat-button-toggle value="Shipped">Shipped</mat-button-toggle>
                     <mat-button-toggle value="Delivered">Delivered</mat-button-toggle>

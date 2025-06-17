@@ -41,21 +41,23 @@ async function getFeaturedProducts() {
     return featuredProducts.map((x) => x.toObject());
 }
 
-async function getProductForListing(searchTerm,categoryId,page,pageSize,sortBy,sortOrder,brandId ) {
-    if (!sortBy) {
-        sortBy = 'Price'
+async function getProductForListing(searchTerm, categoryId, page, pageSize, sortBy, sortOrder, brandId) {
+    if (!sortBy || sortBy.trim() === '') {
+        sortBy = null; // no sorting if empty
     }
     if (!sortOrder) {
         sortOrder = -1;
+    } else {
+        sortOrder = (sortOrder === '-1' || sortOrder === -1) ? -1 : 1;
     }
+
     let queryFilter = {};
+
     if (searchTerm) {
-        queryFilter.$or=[{
-            name : {$regex: '.*' +searchTerm+ '.*'},
-        },
-        {
-            shotDescription : {$regex: '.*' +searchTerm+ '.*'},
-        }];
+        queryFilter.$or = [
+            { name: { $regex: '.' + searchTerm + '.', $options: 'i' } },
+            { shortDescription: { $regex: '.' + searchTerm + '.', $options: 'i' } }
+        ];
     }
     if (categoryId) {
         queryFilter.categoryId = categoryId;
@@ -63,9 +65,21 @@ async function getProductForListing(searchTerm,categoryId,page,pageSize,sortBy,s
     if (brandId) {
         queryFilter.brandId = brandId;
     }
-    const products = await Product.find(queryFilter).sort({
-        [sortBy]: +sortOrder,
-    }).skip((+page - 1) * +pageSize).limit(+pageSize);
+
+    console.log("queryFilter", queryFilter);
+
+    let query = Product.find(queryFilter);
+
+    if (sortBy) {
+        let sortObj = {};
+        sortObj[sortBy] = sortOrder;
+        query = query.sort(sortObj);
+    }
+
+    query = query.skip((+page - 1) * +pageSize).limit(+pageSize);
+
+    const products = await query;
+
     return products.map(x => x.toObject());
 }
 
