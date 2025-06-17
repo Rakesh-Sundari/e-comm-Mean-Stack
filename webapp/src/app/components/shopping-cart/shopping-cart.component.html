@@ -1,0 +1,119 @@
+<body class="bg-gray-100 font-sans">
+    @if(orderStep==0){
+    <div class="max-w-5xl mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Your Shopping Cart</h2>
+
+        <!-- Cart Item -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+
+            @for(item of cartItems; track $index){
+            <div class="flex  items-center justify-between p-6 border-b">
+                <div class="flex items-center">
+                    <img [src]="item.product.images[0]" alt="Product" class="w-20 h-20 object-cover rounded" />
+                    <div class="ml-4">
+                        <h4 class="!text-xl font-semibold">{{item.product.name}}</h4>
+                        <p class="text-gray-500 text-sm">{{item.product.shotDescription}}</p>
+                        <div class="flex gap-1 items-baseline">
+                            <p class="!text-xl text-gray-400 mb-4">$<s>{{ item.product.Price }}</s></p>
+                            <p class="!text-xs font-bold text-red-200 mb-4">{{ item.product.discount }}% OFF</p><br>
+                            <span class="!text-xl text-green-500 font-bold mb-4">${{ sellingPrice(item.product)
+                                }}</span>
+
+                        </div>
+                        Total Amount :{{sellingPrice(item.product)*item.quantity}}
+                    </div>
+
+                </div>
+                <div class="flex items-center">
+                    <div class="flex itemss-center">
+                        <span class="m-4">Quantity:</span>
+                        <span (click)="addToCart(item.product._id!,-1)"
+                            class="tex-lg bg-gray-200 rounded-sm px-3 py-2 cursor-pointer shadow">-</span>
+                        <span class="mx-2">{{item.quantity}}</span>
+                        <span (click)="addToCart(item.product._id!,1)"
+                            class="tex-lg bg-gray-400 rounded-sm px-3 py-2 cursor-pointer shadow">+</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            }
+        </div>
+
+        <!-- Repeat cart items as needed -->
+
+        <!-- Summary Section -->
+        <div class="bg-white shadow rounded-lg p-6 mt-6">
+            <h3 class="text-xl font-bold mb-4">Order Summary</h3>
+            <div class="flex justify-between mb-2">
+                <span>Subtotal</span>
+                <span>{{totalAmount}}</span>
+            </div>
+            <div class="flex justify-between text-lg font-bold border-t pt-2">
+                <span>Total</span>
+                <span>{{"$"+totalAmount}}</span>
+            </div>
+            <button (click)="checkout()"
+                class="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+    }@else if(orderStep==1){
+    <div class="bg-gray-200 min-h-screen py-8">
+        <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+            <h1 class="text-3xl font-bold text-center mb-8">Your Order Address</h1>
+            <form [formGroup]="addressForm">
+                <h1 class="text-lg font-bold">Address :</h1><br>
+                <!-- Name Field -->
+                <div class="mb-4">
+                    <mat-form-field class="w-full">
+                        <mat-label for="name">Address1</mat-label>
+                        <input type="text" formControlName="address1" matInput>
+                    </mat-form-field>
+                </div>
+
+                <!-- Email Field -->
+                <div class="mb-4">
+                    <mat-form-field class="w-full">
+                        <mat-label for="name">Address2</mat-label>
+                        <input type="text" formControlName="address2" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Password Field -->
+                <div class="mb-4">
+                    <mat-form-field class="w-full">
+                        <mat-label for="name">City</mat-label>
+                        <input type="text" formControlName="city" matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="mb-4">
+                    <mat-form-field class="w-full">
+                        <mat-label for="name">Pincode</mat-label>
+                        <input type="text" formControlName="pincode" matInput>
+                    </mat-form-field>
+                </div>
+
+                <!-- Submit Button -->
+                <button mat-raised-button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-200"
+                    (click)="addAddress()">Continue</button>
+            </form>
+        </div>
+    </div>
+    }@else if(orderStep==2){
+    <h1 class="text-3xl font-bold text-center mb-6">Select Payment Method</h1>
+    <div clas="p-30 shadow">
+        <mat-radio-group [(ngModel)]="paymentType">
+        <mat-radio-button value="cash">Cash</mat-radio-button>
+        <mat-radio-button value="cash" [disabled]="true">Card</mat-radio-button>
+    </mat-radio-group>
+    <button (click)="checkout()"
+                class="mt-20" mat-raised-button (click)="completeOrder()">
+                Continue
+            </button>
+    </div>
+
+    }
+</body>

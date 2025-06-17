@@ -1,0 +1,48 @@
+<div class="border-r-4 w-full flex flex-col h-full shadow-lg">
+
+    <!-- Image Section -->
+    <div style="width: 100%; height: 200px; overflow: hidden;">
+        <img [src]="product.images[0]" alt="Product Image" [routerLink]="'/product/' + product._id"
+            class="w-full h-full object-cover" />
+    </div>
+
+    <!-- Content Section -->
+    <div class="p-4 flex flex-col justify-between">
+        <h6 class="truncate text-sm font-semibold">{{product.name}}</h6>
+        <p style="font-size: 14px; color: #777; margin: 10px 0;" class="text-xs text-gray-600 truncate">
+            {{product.shotDescription}}
+        </p>
+
+        <!-- Price and Add to Cart in Same Line -->
+        <div class="flex justify-between items-center">
+            <div class="flex gap-1" [routerLink]="'/product/' + product._id">
+                <p class="!text-xl text-gray-400 mb-4">$<s>{{ product.Price }}</s></p>
+                <p class="!text-xs font-bold text-red-200 mb-4">{{ product.discount }}% OFF</p><br>
+                <span class="!text-xl text-green-500 font-bold mb-4">${{ sellingPrice }}</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+                <button mat-fab color="warn" style="width: 40px; height: 40px; min-height: 40px; box-shadow: none;"
+                    (click)="addToWishList(product)">
+                    <mat-icon style="font-size: 20px;" class="text-red-500">
+                        @if(isInWishlist(product)) {
+                        favorite
+                        } @else {
+                        favorite_border
+                        }
+                    </mat-icon>
+                </button>
+
+                <button mat-fab color="primary" (click)="addToCart(product)"
+                    style="width: 40px; height: 40px; min-height: 40px; box-shadow: none;">
+                    @if(isProductInCart(product._id!)){
+                    <mat-icon style="font-size: 20px;">remove_shopping_cart</mat-icon>
+                    }@else{
+                    <mat-icon style="font-size: 20px;">add_shopping_cart</mat-icon>
+                    }
+
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

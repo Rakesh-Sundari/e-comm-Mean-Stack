@@ -1,0 +1,120 @@
+@if(product){
+<div>
+    <main class="max-w-7xl mx-auto px-6 py-12 space-y-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+            <!-- Product Gallery -->
+            <section>
+                <img id="mainImage" [src]="mainImage" class="w-full h-96 mb-4 rounded-lg" />
+
+                <div class="flex space-x-4">
+                    @for (url of product.images; track $index){
+                    <img [src]="url"
+                        class="w-20 h-20 rounded-lg cursor-pointer border border-gray-300 hover:border-indigo-600 object-cover"
+                        (click)="changeImage(url)" />
+                    }
+                </div>
+            </section>
+
+            <!-- Product Details -->
+            <section class="flex flex-col justify-center justify-start space-y-10">
+                <div>
+                    <h1 class="text-2xl font-extrabold mb-2">{{ product.name }}</h1>
+                    <p class="text-lg leading-relaxed mb-6 text-gray-600">{{ product.shotDescription }}</p>
+                    <div class="flex gap-8">
+                        <p class="!text-xl text-gray-400 mb-4">$<s>{{ product.Price }}</s></p>
+                        <p class="!text-xl font-bold text-red-200 mb-4">{{ product.discount }}% OFF</p>
+                        <span class="!text-2xl text-green-500 font-bold mb-4">${{ sellingPrice }}</span>
+                    </div>
+                    <div class="flex  gap-2" style="width: auto; height: 32px; min-width: 32px; line-height: 20px;">
+                        <button mat-raised-button color="accent" (click)="addToWishList(product)">
+                            @if(isInWishlist(product)){
+                            <mat-icon class="text-red-500">favorite</mat-icon> Remove from Wishlist
+                            }@else{
+                            <mat-icon class="text-red-500">favorite_border</mat-icon>Add to Wishlist
+                            }
+                        </button>
+                        @if(isProductInCart(product._id!)){
+                        <button mat-raised-button color="primary" class="shadow" (click)="addToCart(product)">Remove
+                            from Cart</button>
+
+                        }@else{
+                        <button mat-raised-button color="primary" class="shadow" (click)="addToCart(product)">Add to
+                            Cart</button>
+
+
+                        }
+
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">Product Details</h2>
+                    <div class="whitespace-pre-wrap text-gray-700 leading-relaxed">
+                        {{ product.description }}
+                    </div>
+                </div>
+            </section>
+        </div>
+        @if(similarProducts.length){
+        <div class="my-4">
+            <h4 class="text-2xl font-bold">similar Products</h4>
+            <div class="flex overflow-x-auto gap-4 mt-3 scroll-smooth scrollbar-hide whitespace-nowrap">
+                @for (product of similarProducts; track $index) {
+                <div class="w-3/12 shadow">
+                    <app-product-card [product]="product"></app-product-card>
+                </div>
+                }
+            </div>
+        </div>
+
+        }
+
+
+        <!-- Customer Reviews -->
+        <section class="mt-12 space-y-6">
+            <h2 class="text-2xl font-semibold border-b border-gray-300 pb-2">Customer Reviews</h2>
+
+            <article class="bg-white rounded-lg shadow p-5">
+                <header class="mb-2">
+                    <h3 class="font-semibold text-lg">Anna K.</h3>
+                </header>
+                <p class="text-gray-700">Extremely comfortable and beautiful chair. Worth every penny!</p>
+            </article>
+
+            <article class="bg-white rounded-lg shadow p-5">
+                <header class="mb-2">
+                    <h3 class="font-semibold text-lg">James L.</h3>
+                </header>
+                <p class="text-gray-700">Great chair but took a while to assemble. Overall very happy.</p>
+            </article>
+        </section>
+
+        <!-- Write a Review -->
+        <section class="mt-12 max-w-2xl">
+            <h2 class="text-2xl font-semibold mb-6 border-b border-gray-300 pb-2">Write a Review</h2>
+            <form class="bg-white rounded-lg shadow p-6 space-y-4">
+                <div>
+                    <label for="reviewerName" class="block text-gray-700 font-semibold mb-1">Name</label>
+                    <input type="text" id="reviewerName"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Your name" required />
+                </div>
+                <div>
+                    <label for="reviewText" class="block text-gray-700 font-semibold mb-1">Review</label>
+                    <textarea id="reviewText" rows="4"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 resize-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Write your review here..." required></textarea>
+                </div>
+                <button type="submit"
+                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                    Submit Review
+                </button>
+            </form>
+        </section>
+    </main>
+</div>
+}@else{
+<h2>Loading.....</h2>
+
+}

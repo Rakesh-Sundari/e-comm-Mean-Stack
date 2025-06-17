@@ -1,0 +1,59 @@
+<div class="py-10 px-20">
+    <h1 class="text-xl text-bold">My Orders</h1>
+    <div class="rounded-lg overflow-hidden">
+        @for(order of orders; track $index){
+        <div class="flex justify-between">
+            <div class="w-6/6">
+                <h6>Order Id: {{order._id}}</h6>
+                <span>Date:</span><span>{{order.date | date:'mediumDate'}}</span>
+                <h6>Customer Address :</h6>
+                <span>Order Status:</span><span>{{order.status}}</span>
+                <p>{{order.address.address1}}</p>
+                <p>{{order.address.address2}}</p>
+                <p>{{order.address.city}}</p>
+                <p>{{order.address.pincode}}</p>
+            </div>
+            <div class="w-6/12">
+                <mat-button-toggle-group [value]="order.status" name="status" aria-label="Font Style" (change)="statusChanged($event,order)">
+                    <mat-button-toggle value="Dispatched" >Dispatched</mat-button-toggle>
+                    <mat-button-toggle value="Shipped">Shipped</mat-button-toggle>
+                    <mat-button-toggle value="Delivered">Delivered</mat-button-toggle>
+                </mat-button-toggle-group>
+
+            </div>
+        </div>
+        <div calss="mb-10 shadow-lg">
+            @for(item of order.items; track $index){
+            <div class="flex  items-center justify-between p-6 border-b">
+                <div class="flex items-center">
+                    <img [src]="item.product.images[0]" alt="Product" class="w-20 h-20 object-cover rounded" />
+                    <div class="ml-4">
+                        <h4 class="!text-xl font-semibold">{{item.product.name}}</h4>
+                        <p class="text-gray-500 text-sm">{{item.product.shotDescription}}</p>
+                        <div class="flex gap-1 items-baseline">
+                            <p class="!text-xl text-gray-400 mb-4">$<s>{{ item.product.Price }}</s></p>
+                            <p class="!text-xs font-bold text-red-200 mb-4">{{ item.product.discount }}% OFF</p><br>
+                            <span class="!text-xl text-green-500 font-bold mb-4">${{ sellingPrice(item.product)
+                                }}</span>
+
+                        </div>
+                        Total Amount :{{sellingPrice(item.product)*item.quantity}}
+                    </div>
+
+                </div>
+                <div class="flex items-center">
+                    <div class="flex itemss-center">
+                        <span class="m-4">Quantity:</span>
+
+                        <span class="mx-2">{{item.quantity}}</span>
+
+                    </div>
+                </div>
+
+            </div>
+            }
+        </div>
+        }
+
+    </div>
+</div>
