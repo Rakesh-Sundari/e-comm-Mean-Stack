@@ -1,4 +1,4 @@
 export const environment = {
-    production: true,
-    apiUrl: "https://nodejs-backend-1-fxcqdrd8dme6e7a6.canadacentral-01.azurewebsites.net"
+  production: true,
+  apiUrl: 'https://e-comm-mean-stack.onrender.com'
 };
