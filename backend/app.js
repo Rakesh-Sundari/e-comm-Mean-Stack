@@ -15,7 +15,9 @@ const app = express();
 
 // CORS for Vercel frontend (replace with your final Vercel URL after deployment)
 app.use(cors({
-  origin: ['https://e-comm-mean-stack.vercel.app'], 
+  origin: 'https://e-comm-mean-stack.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
