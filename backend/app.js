@@ -19,7 +19,8 @@ const app = express();
 // CORS for local development and Vercel frontend
 const allowedOrigins = [
   'http://localhost:4200',
-  'https://e-comm-mean-stack.vercel.app'
+  'https://e-comm-mean-stack.vercel.app',
+  'https://saarvi.vercel.app'
 ];
 app.use(cors({
   origin: function(origin, callback) {
