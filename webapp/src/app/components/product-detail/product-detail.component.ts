@@ -19,7 +19,7 @@ export class ProductDetailComponent {
   route = inject(ActivatedRoute);
 
   product!: Product;
-  mainImage!: String;
+  mainImage!: string;
   similarProducts: Product[] = [];
   ngOnInit() {
     this.route.params.subscribe((x: any) => {
@@ -27,10 +27,10 @@ export class ProductDetailComponent {
     })
   }
 
-  getProductDetail(id: String) {
+  getProductDetail(id: string) {
     this.customerService.getProductById(id).subscribe(result => {
       this.product = result;
-      this.mainImage = this.product.images[0];
+  this.mainImage = this.product.images[0]?.toString() || '';
       console.log(this.product);
       this.customerService.getProducts('', this.product.categoryId, '', -1, '', 1, 10).subscribe(result => {
         this.similarProducts = result;
@@ -38,7 +38,7 @@ export class ProductDetailComponent {
     });
 
   }
-  changeImage(url: String) {
+  changeImage(url: string) {
     this.mainImage = url;
   }
 

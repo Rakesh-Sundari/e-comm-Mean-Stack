@@ -9,25 +9,44 @@ const orderRoutes = require("./routes/order");
 const productRoutes = require("./routes/product");
 const customerRoutes = require("./routes/customer");
 const authRoutes = require("./routes/auth");
+
+const contactRoutes = require("./routes/contact");
+const profileRoutes = require("./routes/profile");
 const { verifyToken, isAdmin } = require("./db/middleware/auth-middleware");
 
 const app = express();
 
-// CORS for Vercel frontend (replace with your final Vercel URL after deployment)
+// CORS for local development and Vercel frontend
+const allowedOrigins = [
+  'http://localhost:4200',
+  'https://e-comm-mean-stack.vercel.app'
+];
 app.use(cors({
-  origin: 'https://e-comm-mean-stack.vercel.app',
+  origin: function(origin, callback) {
+    // allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }));
 
+
 // Middleware
 app.use(express.json());
+// Serve uploaded images statically
+app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
 
 // Health check
 app.get("/", (req, res) => {
   res.send("Server running successfully here");
 });
+
 
 // Routes
 app.use("/category", verifyToken, isAdmin, categoryRoutes);
@@ -35,7 +54,9 @@ app.use("/brand", verifyToken, isAdmin, brandRoutes);
 app.use("/orders", verifyToken, isAdmin, orderRoutes);
 app.use("/product", verifyToken, isAdmin, productRoutes);
 app.use("/customer", verifyToken, customerRoutes);
+app.use("/profile", verifyToken, profileRoutes);
 app.use("/auth", authRoutes);
+app.use("/api/contact", contactRoutes);
 
 // MongoDB connection
 async function connectDb() {

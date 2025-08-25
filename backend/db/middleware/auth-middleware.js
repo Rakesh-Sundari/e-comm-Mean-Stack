@@ -24,8 +24,12 @@ function verifyToken(req,res,next){
 }
 
 function isAdmin(req,res,next){
-    if(req.user && req.user.isAdmin){
-
+    console.log('isAdmin middleware:', {
+      user: req.user,
+      isAdminType: typeof req.user?.isAdmin,
+      isAdminValue: req.user?.isAdmin
+    });
+    if(req.user && req.user.isAdmin === true){
         next();
     }else{
         return res.status(403).send({

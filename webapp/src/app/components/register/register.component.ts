@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
 export class RegisterComponent {
   formbuilder=inject(FormBuilder);
   registerForm=this.formbuilder.group({
-    name:['',[Validators.required]],
+    firstName:['',[Validators.required]],
+    lastName:['',[Validators.required]],
     email:['',[Validators.required,Validators.email]],
     password:['',[Validators.minLength(5)]],
   });
@@ -26,10 +27,10 @@ export class RegisterComponent {
 
   register(){
     let value=this.registerForm.value;
-    this.authService.register(value.name!,value.email!,value.password!).subscribe(result=>{
+    // Add an empty array or actual security questions as the fifth argument
+    this.authService.register(value.firstName!, value.lastName!, value.email!, value.password!, []).subscribe(result=>{
       alert("user registered");
       this.router.navigateByUrl("/login");
-
     });
   }
 

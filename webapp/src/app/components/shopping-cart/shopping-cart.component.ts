@@ -1,4 +1,6 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Validators } from '@angular/forms';
 import { CartService } from '../../services/cart.service';
 import { CustomerService } from '../../services/customer.service';
 import { Product } from '../../types/product';
@@ -13,9 +15,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shopping-cart',
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatRadioModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatRadioModule, FormsModule],
   templateUrl: './shopping-cart.component.html',
-  styleUrl: './shopping-cart.component.scss'
+  styleUrls: ['./shopping-cart.component.scss']
 })
 export class ShoppingCartComponent {
 
@@ -56,11 +59,11 @@ export class ShoppingCartComponent {
   formbuilder = inject(FormBuilder);
   paymentType='cash';
   addressForm = this.formbuilder.group({
-    address1: [''],
+    address1: ['', Validators.required],
     address2: [''],
-    city: [''],
-    pincode: [''],
-  })
+    city: ['', Validators.required],
+    pincode: ['', Validators.required],
+  });
   checkout() {
     this.orderStep = 1;
   }

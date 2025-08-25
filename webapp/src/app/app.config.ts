@@ -1,3 +1,4 @@
+
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -8,9 +9,10 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenHttpInterceptor } from './core/token-http-interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)
- ,provideAnimationsAsync(),
- provideHttpClient(withInterceptors([tokenHttpInterceptor])),
- 
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([tokenHttpInterceptor])),
   ],
 };

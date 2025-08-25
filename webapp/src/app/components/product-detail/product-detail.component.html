@@ -11,7 +11,7 @@
                     @for (url of product.images; track $index){
                     <img [src]="url"
                         class="w-20 h-20 rounded-lg cursor-pointer border border-gray-300 hover:border-indigo-600 object-cover"
-                        (click)="changeImage(url)" />
+                        (click)="changeImage(url ? url.toString() : '')" />
                     }
                 </div>
             </section>
@@ -27,13 +27,19 @@
                         <span class="!text-2xl text-green-500 font-bold mb-4">${{ sellingPrice }}</span>
                     </div>
                     <div class="flex  gap-2" style="width: auto; height: 32px; min-width: 32px; line-height: 20px;">
-                        <button mat-raised-button color="accent" (click)="addToWishList(product)">
-                            @if(isInWishlist(product)){
-                            <mat-icon class="text-red-500">favorite</mat-icon> Remove from Wishlist
-                            }@else{
-                            <mat-icon class="text-red-500">favorite_border</mat-icon>Add to Wishlist
-                            }
-                        </button>
+                                                <button mat-raised-button color="accent" (click)="addToWishList(product)">
+                                                        @if(isInWishlist(product)){
+                                                        <ng-container>
+                                                            <mat-icon class="text-red-500">favorite</mat-icon>
+                                                            Remove from Wishlist
+                                                        </ng-container>
+                                                        }@else{
+                                                        <ng-container>
+                                                            <mat-icon class="text-red-500">favorite_border</mat-icon>
+                                                            Add to Wishlist
+                                                        </ng-container>
+                                                        }
+                                                </button>
                         @if(isProductInCart(product._id!)){
                         <button mat-raised-button color="primary" class="shadow" (click)="addToCart(product)">Remove
                             from Cart</button>

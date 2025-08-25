@@ -1,41 +1,52 @@
-<div class="py-10 px-20">
-    <h1 class="text-xl text-bold">My Orders</h1>
-    <div class="rounded-lg overflow-hidden">
-    @for(order of orders; track $index){
-        <h6>Order Id: {{order._id}}</h6>
-        <span>Date:</span><span>{{order.date | date:'mediumDate'}}</span>
-    <div calss="mb-10 shadow-lg">
-        @for(item of order.items; track $index){
-        <div class="flex  items-center justify-between p-6 border-b">
-            <div class="flex items-center">
-                <img [src]="item.product.images[0]" alt="Product" class="w-20 h-20 object-cover rounded" />
-                <div class="ml-4">
-                    <h4 class="!text-xl font-semibold">{{item.product.name}}</h4>
-                    <p class="text-gray-500 text-sm">{{item.product.shotDescription}}</p>
-                    <div class="flex gap-1 items-baseline">
-                        <p class="!text-xl text-gray-400 mb-4">$<s>{{ item.product.Price }}</s></p>
-                        <p class="!text-xs font-bold text-red-200 mb-4">{{ item.product.discount }}% OFF</p><br>
-                        <span class="!text-xl text-green-500 font-bold mb-4">${{ sellingPrice(item.product)
-                            }}</span>
 
-                    </div>
-                    Total Amount :{{sellingPrice(item.product)*item.quantity}}
+<div class="py-10 px-4 md:px-20 bg-gray-50 min-h-screen">
+    <h1 class="text-3xl font-bold mb-8 text-blue-700">My Orders</h1>
+    <div class="space-y-8">
+        @for(order of orders; track $index){
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                            <div>
+                                <span class="text-gray-500">Order ID:</span>
+                                <span class="font-semibold text-blue-600">{{order._id}}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Date:</span>
+                                <span class="font-semibold">{{order.date | date:'mediumDate'}}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500">Status:</span>
+                                <span class="font-semibold px-2 py-1 rounded"
+                                    [ngClass]="{
+                                        'bg-green-100 text-green-700': order.status === 'Delivered',
+                                        'bg-yellow-100 text-yellow-700': order.status === 'Processing',
+                                        'bg-red-100 text-red-700': order.status === 'Cancelled',
+                                        'bg-gray-100 text-gray-700': !order.status
+                                    }"
+                                >{{order.status || 'Unknown'}}</span>
+                            </div>
+                        </div>
+                <div class="divide-y">
+                    @for(item of order.items; track $index){
+                        <div class="flex flex-col md:flex-row items-center py-4">
+                            <img [src]="item.product.images[0]" alt="Product" class="w-24 h-24 object-cover rounded-lg border" />
+                            <div class="flex-1 ml-0 md:ml-6 mt-4 md:mt-0">
+                                <h4 class="text-lg font-semibold text-gray-800">{{item.product.name}}</h4>
+                                <p class="text-gray-500 text-sm mb-2">{{item.product.shotDescription}}</p>
+                                <div class="flex gap-2 items-baseline mb-2">
+                                    <span class="text-gray-400 line-through">${{ item.product.Price }}</span>
+                                    <span class="text-xs font-bold text-red-500">{{ item.product.discount }}% OFF</span>
+                                    <span class="text-green-600 font-bold">${{ sellingPrice(item.product) }}</span>
+                                </div>
+                                <div class="text-gray-700 text-sm">Total: <span class="font-bold">${{ sellingPrice(item.product)*item.quantity }}</span></div>
+                            </div>
+                            <div class="ml-0 md:ml-8 mt-4 md:mt-0 flex items-center">
+                                <span class="text-gray-500 mr-2">Quantity:</span>
+                                <span class="font-semibold">{{item.quantity}}</span>
+                            </div>
+                        </div>
+                    }
                 </div>
-
             </div>
-            <div class="flex items-center">
-                <div class="flex itemss-center">
-                    <span class="m-4">Quantity:</span>
-
-                    <span class="mx-2">{{item.quantity}}</span>
-
-                </div>
-            </div>
-
-        </div>
         }
     </div>
-    }
-
-</div>
 </div>

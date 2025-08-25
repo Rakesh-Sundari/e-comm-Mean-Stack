@@ -1,43 +1,47 @@
 <header class="header">
   <div class="top-line">
     <div class="logo cursor-pointer" routerLink="/">
-      <!-- You can use an img or just text for the logo -->
-      <!-- <img src="logo.png" alt="Website Logo" /> -->
-      <span>MyShopName</span>
-      <!-- Or simply: <span>ShopEasy</span> -->
+      <img src="assets/saarvi-logo.png" alt="Logo" height="40" style="margin-right:10px;" />
     </div>
-
-    <div class="search-container">
-      <input type="text" placeholder="Search products..." [(ngModel)]="searchTerm" (keyup.enter)="onSearch($event)" />
-      <button aria-label="Search" class="search-btn" (click)="onSearch($event)">🔍</button>
-    </div>
-    <div class="profile-link flex gap-2 items-center">
-      @if (authService.isAdmin) {
-      <a routerLink="/admin">{{authService.userName}}</a>
-      }@else {
-      <a routerLink="/profile">{{authService.userName}}</a>
-      }
-
-      @if (authService.isLoggedIn ) {
-      @if(!authService.isAdmin){
-      <a routerLink="/wishlists"><mat-icon class="text-red-500">favorite</mat-icon></a>
-      <a routerLink="/cart"><mat-icon class="text-white-500">shopping_cart</mat-icon></a>
-      <a routerLink="/orders">Orders</a>
-      }
-      <a (click)="logout()" class="cursor-pointer ml-2">Logout</a>
-      }@else {
-      <a routerLink="/login">Log In</a>
-      <a routerLink="/register" class="cursor-pointer ml-2">Register</a>
-      }
+    <nav class="category-menu">
+      <ul>
+        <li *ngFor="let cat of categoryList">
+          <a (click)="searchCategory(cat._id || '')">{{cat.name}}</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div class="search-container">
+        <input type="text" placeholder="Search product ..." [(ngModel)]="searchTerm" (keyup.enter)="onSearch($event)" />
+        <button aria-label="Search" class="search-btn" (click)="onSearch($event)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+      <ng-container *ngIf="authService.isLoggedIn; else loginLinks">
+        <a routerLink="/wishlists" class="icon-btn">
+          <mat-icon>favorite</mat-icon>
+          <span *ngIf="wishlistService.wishlists.length > 0" class="badge">{{wishlistService.wishlists.length}}</span>
+        </a>
+        <a class="icon-btn" (click)="openCartDrawer()">
+          <mat-icon>shopping_cart</mat-icon>
+          <span *ngIf="cartService.items.length > 0" class="badge">{{cartService.items.length}}</span>
+        </a>
+        <app-cart-drawer *ngIf="cartDrawerOpened" [opened]="cartDrawerOpened" (openedChange)="cartDrawerOpened = $event"></app-cart-drawer>
+        <a routerLink="/orders" class="icon-btn">Orders</a>
+        <a routerLink="/contact" class="icon-btn">Contact</a>
+        <a routerLink="/profile" class="icon-btn" aria-label="Profile">
+          <mat-icon>account_circle</mat-icon>
+        </a>
+        <!-- Admin Dashboard link, visible only to admin users -->
+        <a *ngIf="authService.isAdmin" routerLink="/admin" class="icon-btn" aria-label="Admin Dashboard">
+          <mat-icon>admin_panel_settings</mat-icon> Admin
+        </a>
+        <a (click)="logout()" class="icon-btn">Logout</a>
+      </ng-container>
+      <ng-template #loginLinks>
+  <button type="button" (click)="openLogin(false)" class="icon-btn" style="background:none;border:none;padding:0;">Log In</button>
+  <button type="button" (click)="openLogin(true)" class="icon-btn" style="background:none;border:none;padding:0;">Register</button>
+      </ng-template>
     </div>
   </div>
-  @if (authService.isLoggedIn) {
-  <nav class="category-menu">
-    <ul>
-      @for (category of categoryList; track $index) {
-      <li (click)="searchCategory(category._id!)" class="cursor-pointer"><a>{{category.name}}</a></li>
-      }
-    </ul>
-  </nav>
-  }
 </header>

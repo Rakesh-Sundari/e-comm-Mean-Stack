@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Category } from '../types/category';
@@ -7,6 +8,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class CategoryService {
+  // Subject to trigger category refresh
+  public categoryRefresh$ = new Subject<void>();
   http=inject(HttpClient);
 
   constructor() { }
