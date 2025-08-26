@@ -102,9 +102,13 @@ export class CustomerProfileComponent {
 
     const formData = new FormData();
     for (const key in this.user) {
-      if (key !== 'profileImage') {
+      if (key !== 'profileImage' && key !== 'securityQuestions') {
         formData.append(key, this.user[key]);
       }
+    }
+    // Ensure securityQuestions is sent as a JSON string
+    if (this.user.securityQuestions) {
+      formData.append('securityQuestions', JSON.stringify(this.user.securityQuestions));
     }
     formData.append('profileImage', this.selectedImage);
 
