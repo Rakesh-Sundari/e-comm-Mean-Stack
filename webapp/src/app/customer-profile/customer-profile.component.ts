@@ -114,7 +114,7 @@ export class CustomerProfileComponent {
 
     this.authService.updateProfile(formData).subscribe((res: any) => {
       if (res.profileImage) {
-        this.user.profileImage = environment.apiUrl + res.profileImage;
+        this.user.profileImage = res.profileImage.startsWith('http') ? res.profileImage : environment.apiUrl + res.profileImage;
       }
       this.closeImageModal();
     });
