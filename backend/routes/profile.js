@@ -52,4 +52,15 @@ router.put('/', upload.single('profileImage'), async (req, res) => {
     }
 });
 
+// Get logged-in user's profile
+router.get('/', async (req, res) => {
+    const userId = req.user.id;
+    try {
+        const user = await User.findById(userId).select('-password');
+        if (!user) return res.status(404).send({ message: 'User not found.' });
+        res.send(user);
+    } catch (err) {
+        res.status(500).send({ message: 'Error fetching profile', error: err });
+    }
+});
 module.exports = router;
