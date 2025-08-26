@@ -30,6 +30,20 @@ export class AuthService {
   updateProfile(profile: any) {
     return this.http.put(environment.apiUrl + "/profile", profile);
   }
+
+    getProfile() {
+      const token = localStorage.getItem('token');
+      return this.http.get(environment.apiUrl + '/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    }
+
+    changePassword(oldPassword: string, newPassword: string) {
+      const token = localStorage.getItem('token');
+      return this.http.put(environment.apiUrl + '/profile/change-password', { oldPassword, newPassword }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    }
   resetPassword(token: String, password: String) {
     return this.http.post(environment.apiUrl + "/auth/reset-password", { token, password });
   }

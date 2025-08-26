@@ -48,10 +48,10 @@
     </div>
 
     <nav class="profile-nav">
-      <a routerLink="/orders" class="profile-link">Orders</a>
-      <a routerLink="/profile" class="profile-link active">Profile</a>
-      <a routerLink="/addresses" class="profile-link">Addresses</a>
-      <a routerLink="/logout" class="profile-link">Log out</a>
+  <a href="#" class="profile-link" (click)="goToOrders($event)">Orders</a>
+  <a routerLink="/profile" class="profile-link active">Profile</a>
+  <a href="#" class="profile-link" (click)="scrollToProfileDetails($event)">Addresses</a>
+  <a href="#" class="profile-link" (click)="logout()">Log out</a>
     </nav>
   </aside>
 
@@ -78,8 +78,8 @@
       </div>
     </div>
 
-    <!-- Personal Details -->
-    <section class="profile-details">
+  <!-- Personal Details -->
+  <section id="profile-details-section" class="profile-details">
       <h2>Personal Details</h2>
       <form (submit)="saveProfile($event)">
         <div class="form-row">
@@ -155,22 +155,30 @@
     <!-- Change Password -->
     <section class="profile-password">
       <h2>Change Password</h2>
-      <form>
+      <form (submit)="changePassword($event)">
         <div class="form-row">
-          <input type="password" placeholder="Old Password" name="oldPassword" />
+          <input type="password" placeholder="Old Password" name="oldPassword" [(ngModel)]="oldPassword" />
         </div>
         <div class="form-row">
-          <input type="password" placeholder="New Password" name="newPassword" />
+          <input type="password" placeholder="New Password" name="newPassword" [(ngModel)]="newPassword" />
         </div>
         <div class="form-row">
           <input
             type="password"
             placeholder="Retype New Password"
             name="retypeNewPassword"
+            [(ngModel)]="retypeNewPassword"
           />
         </div>
         <button type="submit" class="profile-btn">Change Password</button>
       </form>
+    </section>
+
+    <!-- Addresses Section -->
+    <section id="addresses-section" class="profile-addresses">
+      <h2>Addresses</h2>
+      <p>Add or manage your addresses here.</p>
+      <!-- Add your address form or list here -->
     </section>
 
     <!-- Offers -->

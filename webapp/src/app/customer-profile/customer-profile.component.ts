@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -13,6 +14,9 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./customer-profile.component.scss']
 })
 export class CustomerProfileComponent {
+  oldPassword: string = '';
+  newPassword: string = '';
+  retypeNewPassword: string = '';
   user: any = {
     firstName: '',
     lastName: '',
@@ -25,6 +29,20 @@ export class CustomerProfileComponent {
     email: '',
     profileImage: ''
   };
+      scrollToProfileDetails(event?: Event) {
+        if (event) event.preventDefault();
+        const el = document.getElementById('profile-details-section');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    // ...existing code...
+
+    logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
   get displayName() {
     return `${this.user?.firstName || ''} ${this.user?.lastName || ''}`.trim();
   }
@@ -32,7 +50,11 @@ export class CustomerProfileComponent {
   selectedImage: File | null = null;
   showImageModal: boolean = false;
 
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  constructor(private authService: AuthService, private http: HttpClient, private router: Router) {}
+  goToOrders(event?: Event) {
+    if (event) event.preventDefault();
+    this.router.navigate(['/orders']);
+  }
 
   ngOnInit() {
     // Try to populate from localStorage first
@@ -45,12 +67,17 @@ export class CustomerProfileComponent {
       }
     }
     // Always fetch latest from backend and update localStorage
-    this.http.get(environment.apiUrl + '/profile').subscribe((res: any) => {
-      this.user = { ...this.user, ...res };
-      if (res.profileImage) {
-        this.user.profileImage = res.profileImage.startsWith('http') ? res.profileImage : environment.apiUrl + res.profileImage;
+    this.authService.getProfile().subscribe({
+      next: (res: any) => {
+        this.user = { ...this.user, ...res };
+        if (res.profileImage) {
+          this.user.profileImage = res.profileImage.startsWith('http') ? res.profileImage : environment.apiUrl + res.profileImage;
+        }
+        localStorage.setItem('user', JSON.stringify(this.user));
+      },
+      error: () => {
+        // Optionally handle error (e.g., show message, clear user)
       }
-      localStorage.setItem('user', JSON.stringify(this.user));
     });
   }
 
@@ -103,6 +130,29 @@ export class CustomerProfileComponent {
       },
       error: () => {
         alert('Failed to update profile');
+      }
+    });
+  }
+
+  changePassword(event: Event) {
+    event.preventDefault();
+    if (!this.oldPassword || !this.newPassword || !this.retypeNewPassword) {
+      alert('Please fill all password fields.');
+      return;
+    }
+    if (this.newPassword !== this.retypeNewPassword) {
+      alert('New passwords do not match.');
+      return;
+    }
+    this.authService.changePassword(this.oldPassword, this.newPassword).subscribe({
+      next: (res: any) => {
+        alert(res.message || 'Password changed successfully.');
+        this.oldPassword = '';
+        this.newPassword = '';
+        this.retypeNewPassword = '';
+      },
+      error: (err) => {
+        alert(err.error?.message || 'Failed to change password.');
       }
     });
   }
