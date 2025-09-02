@@ -1,6 +1,6 @@
 const express= require("express");
 const router =express.Router();
-const { getOrders,updateOrderStatus} = require("./../handlers/order-handler");
+const { getOrders,updateOrderStatus, adminCancelOrder} = require("./../handlers/order-handler");
 
 
 router.get("",async (req,res)=>{
@@ -15,6 +15,18 @@ router.post("/:id",async (req,res)=>{
     res.send({message:"updated"});
 });
 
-
+router.post("/:id/cancel",async (req,res)=>{
+    try {
+        const orderId = req.params.id;
+        const reason = req.body.reason || 'Product not available';
+        const result = await adminCancelOrder(orderId, reason);
+        res.send(result);
+    } catch (error) {
+        console.error('Error cancelling order (admin):', error);
+        res.status(400).send({ 
+            error: error.message || 'Failed to cancel order' 
+        });
+    }
+});
 
 module.exports=router;

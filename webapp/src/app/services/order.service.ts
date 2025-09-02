@@ -30,4 +30,14 @@ export class OrderService {
       status:status,
     });
   }
+
+  cancelOrder(orderId: String) {
+    return this.http.post(environment.apiUrl+'/customer/orders/'+orderId+'/cancel', {});
+  }
+
+  adminCancelOrder(orderId: String, reason: String) {
+    return this.http.post(environment.apiUrl+'/orders/'+orderId+'/cancel', {
+      reason: reason
+    });
+  }
 }

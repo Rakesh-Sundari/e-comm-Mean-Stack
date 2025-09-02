@@ -33,6 +33,7 @@ const allowedOrigins = [
   // Vercel deployments
   'https://e-comm-mean-stack.vercel.app',
   'https://saarvi.vercel.app',
+  'https://e-comm-store.vercel.app',
   
   // Azure Static Web Apps
   'https://calm-beach-03b22131e.azurestaticapps.net',
@@ -44,10 +45,17 @@ const allowedOrigins = [
   // Netlify (if used)
   'https://e-comm-mean-stack.netlify.app',
   'https://saarvi.netlify.app',
+  'https://e-comm-store.netlify.app',
   
   // GitHub Pages (if used)
   'https://rakesh-sundari.github.io',
   'https://rakesh-sundari.github.io/e-comm-Mean-Stack',
+  'https://rakesh-sundari.github.io/e-comm-store',
+  
+  // Render deployments (backend hosting)
+  'https://e-comm-backend.onrender.com',
+  'https://e-comm-mean-stack.onrender.com',
+  'https://saarvi-backend.onrender.com',
   
   // Custom domains (add your own)
   'https://yourdomain.com',
@@ -87,6 +95,16 @@ app.use(cors({
     
     // Allow GitHub Pages deployments
     if (origin && origin.includes('.github.io')) {
+      return callback(null, true);
+    }
+    
+    // Allow Render deployments
+    if (origin && origin.includes('.onrender.com')) {
+      return callback(null, true);
+    }
+    
+    // Allow Railway deployments
+    if (origin && origin.includes('.railway.app')) {
       return callback(null, true);
     }
     

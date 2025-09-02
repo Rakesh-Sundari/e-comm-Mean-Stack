@@ -34,4 +34,54 @@ async function getUserOrders(userId) {
     return await getCustomerOrders(userId);
 }
 
-module.exports={addOrder,getCustomerOrders,getOrders,updateOrderStatus,getUserOrders}
+async function cancelCustomerOrder(userId, orderId) {
+    // First verify that the order belongs to the user and is cancellable
+    const order = await Order.findOne({ _id: orderId, userId: userId });
+    
+    if (!order) {
+        throw new Error('Order not found or does not belong to user');
+    }
+    
+    // Check if order can be cancelled (not shipped, delivered, or already cancelled)
+    const status = order.status?.toLowerCase();
+    if (status === 'shipped' || status === 'delivered' || status === 'cancelled') {
+        throw new Error('Order cannot be cancelled');
+    }
+    
+    // Update order status to cancelled
+    await Order.findByIdAndUpdate(orderId, {
+        status: 'Cancelled'
+    });
+    
+    return { message: 'Order cancelled successfully' };
+}
+
+async function adminCancelOrder(orderId, reason) {
+    // Find the order (admin can cancel any order)
+    const order = await Order.findById(orderId);
+    
+    if (!order) {
+        throw new Error('Order not found');
+    }
+    
+    // Check if order can be cancelled (not delivered or already cancelled)
+    const status = order.status?.toLowerCase();
+    if (status === 'delivered' || status === 'cancelled') {
+        throw new Error('Order cannot be cancelled (already delivered or cancelled)');
+    }
+    
+    // Update order status to cancelled with reason
+    await Order.findByIdAndUpdate(orderId, {
+        status: 'Cancelled',
+        cancellationReason: reason,
+        cancelledBy: 'admin',
+        cancelledAt: new Date()
+    });
+    
+    return { 
+        message: 'Order cancelled successfully by admin',
+        reason: reason 
+    };
+}
+
+module.exports={addOrder,getCustomerOrders,getOrders,updateOrderStatus,getUserOrders,cancelCustomerOrder,adminCancelOrder}

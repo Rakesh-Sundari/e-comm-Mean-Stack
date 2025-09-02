@@ -29,3 +29,34 @@
   border-radius: 8px;
   margin-right: 18px;
 }
+
+.cancel-button {
+  background: #ff4444 !important;
+  color: white !important;
+  font-weight: 600;
+  
+  &:hover {
+    background: #cc3333 !important;
+  }
+  
+  &:disabled {
+    background: #cccccc !important;
+    color: #666666 !important;
+  }
+}
+
+.cancel-info-text {
+  font-size: 0.75rem;
+  color: #666;
+  font-style: italic;
+}
+
+.status-cancelled {
+  background: #ffebee !important;
+  color: #c62828 !important;
+}
+
+.status-shipped {
+  background: #e3f2fd !important;
+  color: #1565c0 !important;
+}

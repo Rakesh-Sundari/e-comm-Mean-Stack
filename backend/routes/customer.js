@@ -4,7 +4,7 @@ const { getCategories } = require("../handlers/category-handler");
 const { getBrands } = require("../handlers/brand-handler");
 const { getWishlist, addToWishlist, removeFromWishlist } = require("../handlers/wishlist-handler");
 const { getCartItems, addToCart, removefromCart, clearCart } = require("../handlers/shopping-cart-handler");
-const { addOrder, getCustomerOrders } = require("../handlers/order-handler");
+const { addOrder, getCustomerOrders, cancelCustomerOrder } = require("../handlers/order-handler");
 const router = express.Router();
 
 router.get("/new-products", async (req, res) => {
@@ -117,4 +117,19 @@ router.get("/orders", async (req, res) => {
     const orders = await getCustomerOrders(userId);
     return res.send(orders);
 });
+
+router.post("/orders/:id/cancel", async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const orderId = req.params.id;
+        const result = await cancelCustomerOrder(userId, orderId);
+        return res.send(result);
+    } catch (error) {
+        console.error('Error cancelling order:', error);
+        return res.status(400).send({ 
+            error: error.message || 'Failed to cancel order' 
+        });
+    }
+});
+
 module.exports = router;
