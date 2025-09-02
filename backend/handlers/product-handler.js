@@ -91,10 +91,10 @@ async function getProductForListing(searchTerm, categoryId, page, pageSize, sort
             { shortDescription: { $regex: '.' + searchTerm + '.', $options: 'i' } }
         ];
     }
-    if (categoryId) {
+    if (categoryId && categoryId !== 'all') {
         queryFilter.categoryId = categoryId;
     }
-    if (brandId) {
+    if (brandId && brandId !== 'all' && brandId !== '') {
         queryFilter.brandId = brandId;
     }
 

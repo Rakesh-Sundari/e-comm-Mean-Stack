@@ -47,6 +47,7 @@ const allowedOrigins = [
   
   // GitHub Pages (if used)
   'https://rakesh-sundari.github.io',
+  'https://rakesh-sundari.github.io/e-comm-Mean-Stack',
   
   // Custom domains (add your own)
   'https://yourdomain.com',
@@ -81,6 +82,11 @@ app.use(cors({
     
     // Allow Netlify deployments (dynamic URLs)
     if (origin && (origin.includes('.netlify.app') || origin.includes('.netlify.com'))) {
+      return callback(null, true);
+    }
+    
+    // Allow GitHub Pages deployments
+    if (origin && origin.includes('.github.io')) {
       return callback(null, true);
     }
     
