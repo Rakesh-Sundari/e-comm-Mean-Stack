@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../types/product';
+import { environment } from '../../environments/environment';
 
 export interface SocialPlatform {
   name: string;
@@ -59,8 +60,8 @@ export class SocialShareService {
   }
 
   shareProduct(product: Product, platform: string): void {
-    const baseUrl = window.location.origin;
-    const productUrl = `${baseUrl}/customer/product/${product._id}`;
+    const baseUrl = environment.frontendUrl || window.location.origin;
+    const productUrl = `${baseUrl}/product/${product._id}`;
     const productImage = product.images && product.images.length > 0 ? String(product.images[0]) : '';
     
     // Enhanced share text with emojis and more engaging content
@@ -99,8 +100,8 @@ export class SocialShareService {
   }
 
   copyToClipboard(product: Product): Promise<boolean> {
-    const baseUrl = window.location.origin;
-    const productUrl = `${baseUrl}/customer/product/${product._id}`;
+    const baseUrl = environment.frontendUrl || window.location.origin;
+    const productUrl = `${baseUrl}/product/${product._id}`;
     const shareText = `🛍️ Check out this amazing product: ${String(product.name)}
 
 ✨ ${String(product.shotDescription)}
@@ -133,14 +134,42 @@ export class SocialShareService {
     });
   }
 
+  // Method to copy only the product link (not the full share text)
+  copyProductLink(product: Product): Promise<boolean> {
+    const baseUrl = environment.frontendUrl || window.location.origin;
+    const productUrl = `${baseUrl}/product/${product._id}`;
+
+    return navigator.clipboard.writeText(productUrl).then(() => {
+      return true;
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = productUrl;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        return true;
+      } catch (err) {
+        document.body.removeChild(textArea);
+        return false;
+      }
+    });
+  }
+
   // Method to share via native Web Share API (if available)
   async nativeShare(product: Product): Promise<boolean> {
     if (!navigator.share) {
       return false;
     }
 
-    const baseUrl = window.location.origin;
-    const productUrl = `${baseUrl}/customer/product/${product._id}`;
+    const baseUrl = environment.frontendUrl || window.location.origin;
+    const productUrl = `${baseUrl}/product/${product._id}`;
 
     try {
       await navigator.share({

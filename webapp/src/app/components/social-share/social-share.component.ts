@@ -470,7 +470,7 @@ export class SocialShareComponent {
   }
 
   async copyLink(): Promise<void> {
-    const success = await this.socialShareService.copyToClipboard(this.product);
+    const success = await this.socialShareService.copyProductLink(this.product);
     if (success) {
       this.showMessage('📋 Product link copied to clipboard! Ready to paste anywhere.');
     } else {
