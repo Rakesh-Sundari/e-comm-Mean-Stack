@@ -161,12 +161,27 @@
                 <h1 class="text-3xl font-extrabold mb-8 text-gray-900 text-center">Select Payment Method</h1>
                 <mat-radio-group [(ngModel)]="paymentType" class="flex gap-8 mb-8">
                     <mat-radio-button value="cash" class="text-lg">Cash</mat-radio-button>
-                    <mat-radio-button value="card" class="text-lg" [disabled]="true">Card</mat-radio-button>
+                    <mat-radio-button value="card" class="text-lg">Card</mat-radio-button>
                 </mat-radio-group>
-                <button (click)="completeOrder()"
-                    class="w-full py-3 px-8 rounded-full bg-gradient-to-r from-blue-500 to-pink-500 text-white font-bold text-lg shadow-lg hover:from-blue-600 hover:to-pink-600 transition">
-                    Continue
+                <button (click)="paymentType === 'card' ? addAddress() : completeOrder()"
+                    [disabled]="isProcessingPayment"
+                    class="w-full py-3 px-8 rounded-full bg-gradient-to-r from-blue-500 to-pink-500 text-white font-bold text-lg shadow-lg hover:from-blue-600 hover:to-pink-600 transition disabled:opacity-50">
+                    <span *ngIf="!isProcessingPayment">Continue</span>
+                    <span *ngIf="isProcessingPayment">Processing...</span>
                 </button>
+            </div>
+        </div>
+    }@else if(orderStep==3){
+        <!-- Stripe Payment Step -->
+        <div class="flex flex-col items-center justify-center min-h-[60vh]">
+            <div class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-lg animate-fadeIn">
+                <app-stripe-payment 
+                    [amount]="totalAmount"
+                    [clientSecret]="clientSecret"
+                    (paymentSuccess)="onStripePaymentSuccess($event)"
+                    (paymentError)="onStripePaymentError($event)"
+                    (paymentCancel)="onStripePaymentCancel()">
+                </app-stripe-payment>
             </div>
         </div>
 

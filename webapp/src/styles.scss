@@ -22,6 +22,76 @@ body, html {
   z-index: -1;
 }
 
+/* Social Share Styles */
+.success-snackbar {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3) !important;
+}
+
+.error-snackbar {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(244, 67, 54, 0.3) !important;
+}
+
+/* Enhanced Material Menu Styling for Social Share */
+.mat-mdc-menu-panel.share-menu {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Menu animation */
+.mat-mdc-menu-panel {
+  transform-origin: top !important;
+  animation: menuSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes menuSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Social share button positioning in product detail */
+.product-detail .social-share-container {
+  margin-left: 8px;
+}
+
+/* Tooltip styling enhancement */
+[title] {
+  position: relative;
+}
+
+/* Custom scrollbar for menus if needed */
+.mat-mdc-menu-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.mat-mdc-menu-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mat-mdc-menu-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.mat-mdc-menu-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
 /* Forced profile modal and image styles for customer profile */
 .profile-user {
   display: flex !important;

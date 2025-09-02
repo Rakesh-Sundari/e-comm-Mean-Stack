@@ -29,6 +29,16 @@ export class ProductListComponent {
   category:Category[]=[];
   brands:Brand[]=[];
 
+  // Shuffle function to randomize array order
+  private shuffleArray<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
   ngOnInit(){
     this.customerService.getCategories().subscribe(result=>{
       this.category=result;
@@ -59,7 +69,12 @@ export class ProductListComponent {
       this.page,
       this.pageSize
     ).subscribe(result => {
-      this.products = result;
+      // Only shuffle if no specific sorting is applied
+      if (!this.sortBy || this.sortBy === '') {
+        this.products = this.shuffleArray(result);
+      } else {
+        this.products = result;
+      }
       if (result.length<this.pageSize) {
         this.isNext = false;
       }
@@ -79,6 +94,16 @@ export class ProductListComponent {
     this.page=page;
     this.isNext=true;
     this.getProducts();
+    
+    // Scroll to top of the page or products section
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Alternative: scroll to products section specifically
+      // const productsSection = document.querySelector('.flex-1');
+      // if (productsSection) {
+      //   productsSection.scrollIntoView({ behavior: 'smooth' });
+      // }
+    }, 100);
   }
 
 }

@@ -26,7 +26,7 @@
                         <p class="!text-xl font-bold text-red-200 mb-4">{{ product.discount }}% OFF</p>
                         <span class="!text-2xl text-green-500 font-bold mb-4">${{ sellingPrice }}</span>
                     </div>
-                    <div class="flex  gap-2" style="width: auto; height: 32px; min-width: 32px; line-height: 20px;">
+                    <div class="flex gap-2 items-center flex-wrap" style="width: auto; height: auto; min-width: 32px; line-height: 20px;">
                                                 <button mat-raised-button color="accent" (click)="addToWishList(product)">
                                                         @if(isInWishlist(product)){
                                                         <ng-container>
@@ -48,8 +48,10 @@
                         <button mat-raised-button color="primary" class="shadow" (click)="addToCart(product)">Add to
                             Cart</button>
 
-
                         }
+
+                        <!-- Share Button with Text -->
+                        <app-social-share [product]="product" [showText]="true" [iconOnly]="false"></app-social-share>
 
                     </div>
                 </div>
@@ -76,45 +78,40 @@
 
         }
 
-
-        <!-- Customer Reviews -->
-        <section class="mt-12 space-y-6">
-            <h2 class="text-2xl font-semibold border-b border-gray-300 pb-2">Customer Reviews</h2>
-
-            <article class="bg-white rounded-lg shadow p-5">
-                <header class="mb-2">
-                    <h3 class="font-semibold text-lg">Anna K.</h3>
-                </header>
-                <p class="text-gray-700">Extremely comfortable and beautiful chair. Worth every penny!</p>
-            </article>
-
-            <article class="bg-white rounded-lg shadow p-5">
-                <header class="mb-2">
-                    <h3 class="font-semibold text-lg">James L.</h3>
-                </header>
-                <p class="text-gray-700">Great chair but took a while to assemble. Overall very happy.</p>
-            </article>
-        </section>
+        <!-- Customer Reviews Component -->
+        <app-reviews [productId]="product._id?.toString() || ''"></app-reviews>
 
         <!-- Write a Review -->
         <section class="mt-12 max-w-2xl">
             <h2 class="text-2xl font-semibold mb-6 border-b border-gray-300 pb-2">Write a Review</h2>
-            <form class="bg-white rounded-lg shadow p-6 space-y-4">
+            <form class="bg-white rounded-lg shadow p-6 space-y-4" (ngSubmit)="submitReview()" #reviewForm="ngForm">
                 <div>
-                    <label for="reviewerName" class="block text-gray-700 font-semibold mb-1">Name</label>
-                    <input type="text" id="reviewerName"
+                    <label for="reviewTitle" class="block text-gray-700 font-semibold mb-1">Review Title</label>
+                    <input type="text" id="reviewTitle" [(ngModel)]="newReview.title" name="reviewTitle"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Your name" required />
+                        placeholder="Summarize your review" required />
+                </div>
+                <div>
+                    <label for="reviewRating" class="block text-gray-700 font-semibold mb-1">Rating</label>
+                    <select id="reviewRating" [(ngModel)]="newReview.rating" name="reviewRating"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-indigo-500" required>
+                        <option value="">Select a rating</option>
+                        <option value="5">5 Stars - Excellent</option>
+                        <option value="4">4 Stars - Good</option>
+                        <option value="3">3 Stars - Average</option>
+                        <option value="2">2 Stars - Poor</option>
+                        <option value="1">1 Star - Terrible</option>
+                    </select>
                 </div>
                 <div>
                     <label for="reviewText" class="block text-gray-700 font-semibold mb-1">Review</label>
-                    <textarea id="reviewText" rows="4"
+                    <textarea id="reviewText" rows="4" [(ngModel)]="newReview.comment" name="reviewComment"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 resize-none focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Write your review here..." required></textarea>
+                        placeholder="Write your detailed review here..." required></textarea>
                 </div>
-                <button type="submit"
-                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
-                    Submit Review
+                <button type="submit" [disabled]="!reviewForm.valid || submittingReview"
+                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition disabled:bg-gray-400">
+                    {{ submittingReview ? 'Submitting...' : 'Submit Review' }}
                 </button>
             </form>
         </section>

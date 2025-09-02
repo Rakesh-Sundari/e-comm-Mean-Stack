@@ -3,27 +3,32 @@ const Cart = require("./../db/cart");
 
 
 async function addToCart(userId, productId, quantity) {
+    try {
+        console.log("Incoming quantity:", quantity, "Type:", typeof quantity);
 
-    console.log("Incoming quantity:", quantity, "Type:", typeof quantity);
-
-    let product = await Cart.findOne({ userId: userId, productId: productId });
-    if (product) {
-        if (product.quantity + quantity <= 0) {
-            await removefromCart(userId, productId);
+        let product = await Cart.findOne({ userId: userId, productId: productId });
+        if (product) {
+            if (product.quantity + quantity <= 0) {
+                await removefromCart(userId, productId);
+                return { success: true, message: "Item removed from cart", quantity: 0 };
+            } else {
+                const updatedProduct = await Cart.findByIdAndUpdate(product._id, {
+                    quantity: product.quantity + quantity
+                }, { new: true });
+                return { success: true, message: "Cart updated", quantity: updatedProduct.quantity };
+            }
         } else {
-            await Cart.findByIdAndUpdate(product._id, {
-                quantity: product.quantity + quantity
+            const newProduct = new Cart({
+                userId: userId,
+                productId: productId,
+                quantity: quantity,
             });
-
+            await newProduct.save();
+            return { success: true, message: "Item added to cart", quantity: quantity };
         }
-
-    } else {
-        product = new Cart({
-            userId: userId,
-            productId: productId,
-            quantity: quantity,
-        });
-        product.save();
+    } catch (error) {
+        console.error("Error adding to cart:", error);
+        return { success: false, message: "Failed to add item to cart", error: error.message };
     }
 }
 

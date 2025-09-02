@@ -38,13 +38,15 @@
             </mat-form-field>
         </div>
 
-        <div class="flex flex-wrap">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (product of products; track $index) {
-            <div class="w-4/12 mb-4">
+            <div class="w-full">
                 <app-product-card [product]="product"></app-product-card>
             </div>
             }@empty{
-            <h6>No Producst Found</h6>
+            <div class="col-span-full">
+                <h6>No Products Found</h6>
+            </div>
             }
         </div>
         <div class="flex gap-4">

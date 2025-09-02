@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-customer-profile',
@@ -26,7 +27,7 @@ export class CustomerProfileComponent {
       alert('New passwords do not match.');
       return;
     }
-    this.http.put('http://localhost:3000/profile/change-password', {
+    this.http.put(environment.apiUrl + '/profile/change-password', {
       oldPassword: this.oldPassword,
       newPassword: this.newPassword
     }, { withCredentials: true }).subscribe({
@@ -71,6 +72,19 @@ export class CustomerProfileComponent {
 
   saving = false;
   selectedImage: File | null = null;
+
+  // Helper method to get full image URL
+  getProfileImageUrl(): string {
+    if (!this.user.profileImage) {
+      return 'assets/profile-placeholder.png';
+    }
+    
+    if (this.user.profileImage.startsWith('/uploads')) {
+      return environment.apiUrl + this.user.profileImage;
+    }
+    
+    return this.user.profileImage;
+  }
 
   // Sidebar navigation actions
   goToOrders() {
@@ -132,7 +146,7 @@ export class CustomerProfileComponent {
     const formData = new FormData();
     formData.append('profileImage', this.selectedImage);
 
-    this.http.put('http://localhost:3000/profile', formData, { withCredentials: true }).subscribe({
+    this.http.put(environment.apiUrl + '/profile', formData, { withCredentials: true }).subscribe({
       next: (res: any) => {
         alert('Image uploaded successfully!');
         if (res.profileImage) {

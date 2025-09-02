@@ -1,13 +1,17 @@
 const Order = require("./../db/order");
 
 async function addOrder(userId, orderModel) {
+    console.log('Creating order for user:', userId, 'with data:', orderModel);
     let order = new Order({
         ...orderModel,
         userId: userId,
-        status:"inprogress",
-    })
-    await order.save();
+        status: "inprogress",
+        date: new Date()
+    });
     
+    const savedOrder = await order.save();
+    console.log('Order saved successfully:', savedOrder._id);
+    return savedOrder;
 }
 
 
@@ -25,4 +29,9 @@ async function updateOrderStatus(id,status) {
         status:status,
     });
 }
-module.exports={addOrder,getCustomerOrders,getOrders,updateOrderStatus}
+
+async function getUserOrders(userId) {
+    return await getCustomerOrders(userId);
+}
+
+module.exports={addOrder,getCustomerOrders,getOrders,updateOrderStatus,getUserOrders}

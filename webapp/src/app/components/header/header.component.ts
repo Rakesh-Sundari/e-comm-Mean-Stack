@@ -7,6 +7,7 @@ import { LoginToggleService } from '../../services/login-toggle.service';
 import { CustomerService } from '../../services/customer.service';
 import { WishlistService } from '../../services/wishlist.service';
 import { CartService } from '../../services/cart.service';
+import { CartDrawerService } from '../../services/cart-drawer.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,6 +34,7 @@ export class HeaderComponent {
   authService = inject(AuthService);
   wishlistService = inject(WishlistService);
   cartService = inject(CartService);
+  cartDrawerService = inject(CartDrawerService);
   searchTerm!: String;
   cartDrawerOpened = false;
 
@@ -43,6 +45,11 @@ export class HeaderComponent {
     });
     this.wishlistService.init();
     this.cartService.init();
+    
+    // Subscribe to cart drawer service
+    this.cartDrawerService.cartDrawerOpened$.subscribe(opened => {
+      this.cartDrawerOpened = opened;
+    });
   }
 
   loadCategories() {
@@ -64,10 +71,11 @@ export class HeaderComponent {
   }
 
   openCartDrawer() {
-    this.cartDrawerOpened = true;
+    this.cartDrawerService.openCartDrawer();
   }
+  
   closeCartDrawer() {
-    this.cartDrawerOpened = false;
+    this.cartDrawerService.closeCartDrawer();
   }
 
   logout(){

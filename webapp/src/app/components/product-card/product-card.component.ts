@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { WishlistService } from '../../services/wishlist.service';
 import { CartService } from '../../services/cart.service';
+import { SocialShareComponent } from '../social-share/social-share.component';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, SocialShareComponent],
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss']
 })

@@ -19,6 +19,7 @@ import { OrdersComponent } from './components/manage/orders/orders.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AuthComponent } from './auth/auth.component';
 import { ForgotComponent } from './forgot/forgot.component';
+import { RecentlyViewedComponent } from './components/recently-viewed/recently-viewed.component';
 
 export const routes: Routes = [
                 {
@@ -99,6 +100,11 @@ export const routes: Routes = [
                 {
                     path: 'wishlists',
                     component: WishlistsComponent,
+                    canActivate: [authGuard]
+                },
+                {
+                    path: 'recently-viewed',
+                    component: RecentlyViewedComponent,
                     canActivate: [authGuard]
                 },
                 {

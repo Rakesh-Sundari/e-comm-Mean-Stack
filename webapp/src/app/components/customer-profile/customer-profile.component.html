@@ -2,7 +2,7 @@
   <aside class="profile-sidebar">
     <div class="profile-user">
       <img 
-        [src]="user.profileImage ? (user.profileImage.startsWith('/uploads') ? 'http://localhost:3000' + user.profileImage : user.profileImage) : 'assets/profile-placeholder.png'" 
+        [src]="getProfileImageUrl()" 
         alt="Profile" 
         class="profile-img" 
       />

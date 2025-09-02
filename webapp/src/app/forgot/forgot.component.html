@@ -6,7 +6,10 @@
       <h1>Forgot Password</h1>
       <p>Enter your email address to verify your identity.</p>
       <input type="email" formControlName="email" placeholder="Email" required autocomplete="off" />
-  <button type="submit">Next</button>
+      <button type="submit">Next</button>
+      <div class="back-link">
+        <a href="/login">← Back to Login</a>
+      </div>
     </form>
 
     <!-- Step 2: Answer one random security question -->
@@ -16,6 +19,9 @@
       <input type="text" formControlName="answer" required autocomplete="off" />
       <input type="password" formControlName="newPassword" placeholder="New Password*" required autocomplete="off" />
       <button type="submit">Reset Password</button>
+      <div class="back-link">
+        <a href="/login">← Back to Login</a>
+      </div>
     </form>
 
     <div *ngIf="message" class="message">{{ message }}</div>

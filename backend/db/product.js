@@ -11,7 +11,19 @@ const productSchema=new mongoose.Schema({
     brandId:{ type: Schema.Types.ObjectId, ref: 'brands' },
 
     isFeatured:Boolean,
-    isNewProduct:Boolean
+    isNewProduct:Boolean,
+    
+    // Review related fields
+    averageRating: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 5
+    },
+    totalReviews: {
+        type: Number,
+        default: 0
+    }
 
 });
 const Product=mongoose.model("products",productSchema);

@@ -54,7 +54,7 @@ async function loginUser(model){
             email:user.email,
             isAdmin:user.isAdmin
 
-        },"secret",{
+        },process.env.JWT_SECRET,{
             expiresIn:"1h"
         });
         return {token,user};

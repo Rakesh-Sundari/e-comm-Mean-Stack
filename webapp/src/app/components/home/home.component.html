@@ -86,3 +86,21 @@
         }
     </div>
 </section>
+
+<!-- Recently Viewed Section -->
+<section class="recently-viewed py-16 px-8" *ngIf="recentlyViewedProducts.length > 0">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-extrabold text-gray-900">Recently Viewed</h2>
+        <a routerLink="/recently-viewed" class="text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-2">
+            View All
+            <mat-icon>arrow_forward</mat-icon>
+        </a>
+    </div>
+    <div class="overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-8 px-2" style="scroll-behavior: smooth;">
+        @for (item of recentlyViewedProducts.slice(0, 5); track $index) {
+            <div class="inline-block min-w-[320px] max-w-xs">
+                <app-product-card [product]="item.product"></app-product-card>
+            </div>
+        }
+    </div>
+</section>
