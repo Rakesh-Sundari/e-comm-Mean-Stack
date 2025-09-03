@@ -1,8 +1,6 @@
 {
   "version": 2,
   "name": "saarvi-e-commerce",
-  "buildCommand": "cd webapp && npm install && npm run build",
-  "installCommand": "cd webapp && npm install",
   "builds": [
     {
       "src": "webapp/package.json",
@@ -36,9 +34,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "FORCE_DEPLOY": "true"
-  }
+  ]
 }
