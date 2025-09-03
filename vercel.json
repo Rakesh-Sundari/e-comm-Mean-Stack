@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "saarvi-e-commerce",
-  "buildCommand": "cd webapp && npm install && npm run build",
+  "buildCommand": "cd webapp && npm install && npm run build -- --configuration=production",
   "installCommand": "cd webapp && npm install",
   "builds": [
     {
