@@ -2,7 +2,7 @@
   "version": 2,
   "name": "saarvi-e-commerce",
   "buildCommand": "cd webapp && npm install && npm run build",
-  "outputDirectory": "webapp/dist/webapp/browser",
+  "outputDirectory": "webapp/dist/browser",
   "installCommand": "cd webapp && npm install",
   "framework": "angular",
   "builds": [
@@ -10,7 +10,7 @@
       "src": "webapp/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/webapp/browser"
+        "distDir": "dist/browser"
       }
     }
   ],
