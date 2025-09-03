@@ -86,9 +86,12 @@ async function getProductForListing(searchTerm, categoryId, page, pageSize, sort
     let queryFilter = {};
 
     if (searchTerm) {
+        // Match any substring in name, shortDescription, or description
+        const pattern = new RegExp(searchTerm, 'i');
         queryFilter.$or = [
-            { name: { $regex: '.' + searchTerm + '.', $options: 'i' } },
-            { shortDescription: { $regex: '.' + searchTerm + '.', $options: 'i' } }
+            { name: { $regex: pattern } },
+            { shortDescription: { $regex: pattern } },
+            { description: { $regex: pattern } }
         ];
     }
     if (categoryId && categoryId !== 'all') {

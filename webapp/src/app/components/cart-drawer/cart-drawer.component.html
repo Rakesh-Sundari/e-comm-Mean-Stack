@@ -11,10 +11,12 @@
       </ng-container>
       <ng-template #cartItems>
         <div *ngFor="let item of cartService.items" class="flex items-center justify-between mb-6">
-          <img [src]="item.product.images[0]" alt="Product" class="w-16 h-16 object-cover rounded-lg" />
-          <div class="ml-4 flex-1">
-            <div class="font-semibold">{{item.product.name}}</div>
-            <div class="text-gray-500">{{item.quantity}} × ${{item.product.Price}}</div>
+          <div class="flex items-center flex-1 cursor-pointer" (click)="openProduct(item.product._id + '')">
+            <img [src]="item.product.images[0]" alt="Product" class="w-16 h-16 object-cover rounded-lg" />
+            <div class="ml-4">
+              <div class="font-semibold">{{item.product.name}}</div>
+              <div class="text-gray-500">{{item.quantity}} × ${{item.product.Price}}</div>
+            </div>
           </div>
           <button mat-icon-button color="warn" (click)="removeFromCart((item.product._id + ''))"><mat-icon>close</mat-icon></button>
         </div>

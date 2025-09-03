@@ -14,6 +14,10 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, MatIconModule, MatSidenavModule, FormsModule]
 })
 export class CartDrawerComponent {
+  openProduct(productId: string) {
+    this.closeDrawer();
+    this.router.navigate(['/product', productId]);
+  }
   @Input() opened: boolean = false;
   @Output() openedChange = new EventEmitter<boolean>();
 

@@ -35,7 +35,8 @@ export class HeaderComponent {
   wishlistService = inject(WishlistService);
   cartService = inject(CartService);
   cartDrawerService = inject(CartDrawerService);
-  searchTerm!: String;
+  searchTerm: string = '';
+  private searchTimeout: any;
   cartDrawerOpened = false;
 
   ngOnInit() {
@@ -59,10 +60,13 @@ export class HeaderComponent {
   }
 
   router=inject(Router);
-  onSearch(e:any) {
-    if(e.target.value) {
-      this.router.navigateByUrl("/products?search="+e.target.value)
-    }
+  onSearch() {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      if (this.searchTerm && this.searchTerm.trim()) {
+        this.router.navigateByUrl("/products?search=" + encodeURIComponent(this.searchTerm.trim()));
+      }
+    }, 400);
   }
 
   searchCategory(id:String) {

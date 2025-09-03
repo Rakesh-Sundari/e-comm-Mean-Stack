@@ -12,8 +12,8 @@
     </nav>
     <div class="header-actions">
       <div class="search-container">
-        <input type="text" placeholder="Search product ..." [(ngModel)]="searchTerm" (keyup.enter)="onSearch($event)" />
-        <button aria-label="Search" class="search-btn" (click)="onSearch($event)">
+  <input type="text" placeholder="Search product ..." [(ngModel)]="searchTerm" (keyup)="onSearch()" />
+  <button aria-label="Search" class="search-btn" (click)="onSearch()">
           <mat-icon>search</mat-icon>
         </button>
       </div>

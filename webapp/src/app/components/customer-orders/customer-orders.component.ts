@@ -17,6 +17,11 @@ import { MatIconModule } from '@angular/material/icon';
 export class CustomerOrdersComponent {
   router = inject(Router);
   // ...existing code...
+  openProduct(productId: string) {
+    if (productId) {
+      this.router.navigate(['/product', productId]);
+    }
+  }
   // ...existing code...
   orders:Order[]=[];
   orderService=inject(OrderService);
