@@ -113,6 +113,11 @@ app.use(cors({
       return callback(null, true);
     } else {
       console.log('⚠️ CORS origin check:', origin);
+// Enable CORS for Vercel frontend
+app.use(cors({
+  origin: 'https://saarvi.vercel.app',
+  credentials: true
+}));
       // In production, you might want to be more restrictive
       // For now, allowing all to prevent deployment issues
       return callback(null, true);
