@@ -9,7 +9,8 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
-        value: mongodb+srv://rakesh08sundari:Frby9zt7K6SdOaCB@cluster0.6rxanla.mongodb.net/e-comm-store-db?retryWrites=true&w=majority&appName=Cluster0
+        sync: false
+
       - key: JWT_SECRET
         value: 6f5f5a25-bb9f-4b68-a38d-41c23d112bd4
       - key: STRIPE_SECRET_KEY
