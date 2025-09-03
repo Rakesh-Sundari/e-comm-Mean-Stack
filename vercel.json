@@ -38,6 +38,7 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "FORCE_DEPLOY": "true"
   }
 }
