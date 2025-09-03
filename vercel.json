@@ -1,10 +1,9 @@
 {
-  "version": 2,
   "builds": [
     {
-      "src": "webapp/package.json",
+      "src": "angular.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist/webapp/browser" }
+      "config": { "distDir": "dist/webapp" }
     }
   ],
   "routes": [
