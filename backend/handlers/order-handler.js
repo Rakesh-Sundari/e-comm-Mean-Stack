@@ -17,12 +17,20 @@ async function addOrder(userId, orderModel) {
 
 async function getCustomerOrders(userId) {
     let orders = await Order.find({ userId: userId });
-    return orders.map((x) => x.toObject());
+    return orders.map((x) => {
+        const obj = x.toObject();
+        obj.cancellationReason = x.cancellationReason || '';
+        return obj;
+    });
 }
 
 async function getOrders(){
      let orders = await Order.find();
-    return orders.map((x) => x.toObject());
+    return orders.map((x) => {
+        const obj = x.toObject();
+        obj.cancellationReason = x.cancellationReason || '';
+        return obj;
+    });
 }
 async function updateOrderStatus(id,status) {
     await Order.findByIdAndUpdate(id,{
@@ -37,22 +45,26 @@ async function getUserOrders(userId) {
 async function cancelCustomerOrder(userId, orderId) {
     // First verify that the order belongs to the user and is cancellable
     const order = await Order.findOne({ _id: orderId, userId: userId });
-    
+
     if (!order) {
         throw new Error('Order not found or does not belong to user');
     }
-    
+
     // Check if order can be cancelled (not shipped, delivered, or already cancelled)
     const status = order.status?.toLowerCase();
     if (status === 'shipped' || status === 'delivered' || status === 'cancelled') {
         throw new Error('Order cannot be cancelled');
     }
-    
-    // Update order status to cancelled
+
+    // Accept reason as third argument
+    const reason = arguments.length > 2 ? arguments[2] : '';
+
+    // Update order status to cancelled and save reason
     await Order.findByIdAndUpdate(orderId, {
-        status: 'Cancelled'
+        status: 'Cancelled',
+        cancellationReason: reason
     });
-    
+
     return { message: 'Order cancelled successfully' };
 }
 

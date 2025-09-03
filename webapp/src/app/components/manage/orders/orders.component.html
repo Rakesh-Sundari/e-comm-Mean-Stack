@@ -29,7 +29,7 @@
                             <span class="text-gray-500 text-sm">Order Status:</span>
                             <span class="px-3 py-1 rounded-full text-sm font-semibold"
                                 [class]="getStatusColorClass(order.status)"
-                            >{{order.status || 'Unknown'}}</span>
+                            >{{order.status || 'Unknown'}}<ng-container *ngIf="order.status === 'Cancelled' && order.cancellationReason"> — <span class="text-red-500 font-semibold">Reason: {{order.cancellationReason}}</span></ng-container></span>
                         </div>
                     </div>
                     
@@ -42,6 +42,7 @@
                                 aria-label="Font Style" 
                                 (change)="statusChanged($event,order)"
                                 class="status-toggle-group"
+                                [disabled]="order.status === 'Cancelled'"
                             >
                                 <mat-button-toggle value="Dispatched" class="status-toggle">Dispatched</mat-button-toggle>
                                 <mat-button-toggle value="Shipped" class="status-toggle">Shipped</mat-button-toggle>
@@ -56,6 +57,7 @@
                                     color="warn" 
                                     (click)="cancelOrder(order)"
                                     class="cancel-order-btn w-full flex items-center justify-center gap-2"
+                                    [disabled]="order.status === 'Cancelled' || order.status === 'Delivered' || order.status === 'Shipped' || order.status === 'Dispatched'"
                                 >
                                     <mat-icon>cancel</mat-icon>
                                     Cancel Order

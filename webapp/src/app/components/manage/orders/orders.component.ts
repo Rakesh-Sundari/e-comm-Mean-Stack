@@ -79,9 +79,9 @@ export class OrdersComponent {
   }
 
   canCancelOrder(order: Order): boolean {
-    // Admin can cancel orders that are not delivered or already cancelled
-    const status = order.status?.toLowerCase();
-    return status !== 'delivered' && status !== 'cancelled';
+  // Admin can cancel orders that are not delivered or already cancelled
+  const status = order.status?.toLowerCase();
+  return status !== 'delivered' && status !== 'cancelled';
   }
 
   getStatusColorClass(status: String | undefined): string {

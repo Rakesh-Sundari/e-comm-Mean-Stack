@@ -122,7 +122,8 @@ router.post("/orders/:id/cancel", async (req, res) => {
     try {
         const userId = req.user.id;
         const orderId = req.params.id;
-        const result = await cancelCustomerOrder(userId, orderId);
+        const reason = req.body.reason || '';
+        const result = await cancelCustomerOrder(userId, orderId, reason);
         return res.send(result);
     } catch (error) {
         console.error('Error cancelling order:', error);

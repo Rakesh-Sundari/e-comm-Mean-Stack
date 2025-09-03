@@ -19,7 +19,8 @@ router.get('/verify-orders', async (req, res) => {
             status: order.status,
             date: order.date,
             totalItems: order.items?.length || 0,
-            address: order.address
+            address: order.address,
+            cancellationReason: order.cancellationReason || '',
         }));
         
         res.json({
@@ -57,8 +58,29 @@ router.get('/order/:id', async (req, res) => {
                 date: order.date,
                 items: order.items,
                 address: order.address
+                    ,
+                    cancellationReason: order.cancellationReason || ''
             }
         });
+// Cancel an order by ID (admin only)
+router.post('/order/:id/cancel', async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+                const reason = req.body.reason || '';
+                console.log('Saving cancellation reason:', reason);
+                const updatedOrder = await Order.findByIdAndUpdate(
+                    req.params.id,
+                    { status: 'Cancelled', cancellationReason: reason },
+                    { new: true }
+                );
+                res.json({ success: true, message: 'Order cancelled', order: updatedOrder });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to cancel order', message: error.message });
+    }
+});
     } catch (error) {
         console.error('Error fetching order:', error);
         res.status(500).json({ 

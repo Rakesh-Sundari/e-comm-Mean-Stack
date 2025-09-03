@@ -8,4 +8,5 @@ export interface Order {
     date: Date,
    
     status?:String,
+    cancellationReason?: string,
 }

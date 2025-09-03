@@ -31,8 +31,8 @@ export class OrderService {
     });
   }
 
-  cancelOrder(orderId: String) {
-    return this.http.post(environment.apiUrl+'/customer/orders/'+orderId+'/cancel', {});
+  cancelOrder(orderId: string, reason: string) {
+    return this.http.post(environment.apiUrl + '/customer/orders/' + orderId + '/cancel', { reason: reason });
   }
 
   adminCancelOrder(orderId: String, reason: String) {

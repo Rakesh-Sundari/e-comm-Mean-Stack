@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema({
     paymentType: String,
     address: mongoose.Schema.Types.Mixed,
     status: String,
+        cancellationReason: String,
     paymentIntentId: String, // For Stripe payment tracking
     paymentStatus: String, // 'pending', 'paid', 'failed'
 
